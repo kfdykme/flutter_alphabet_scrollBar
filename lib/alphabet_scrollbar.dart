@@ -9,6 +9,7 @@ class AlphabetScrollbar extends StatefulWidget {
       {super.key,
       this.selectedLetterColor = Colors.red,
       required this.onLetterChange,
+      this.onLetterChagneStatus,
       this.style,
       this.selectedLetterSize,
       this.padding,
@@ -26,6 +27,7 @@ class AlphabetScrollbar extends StatefulWidget {
       this.selectedLetterContainerDecoration,
       this.selectedLettercontainerPadding});
 
+  final Function(bool)? onLetterChagneStatus;
   final Function(String) onLetterChange;
   final TextStyle? style;
   final double? selectedLetterSize;
@@ -96,15 +98,18 @@ class _AlphabetScrollbarState extends State<AlphabetScrollbar> {
         onTapDown: widget.switchToHorizontal
             ? (details) => {
                   _alphabetScrollActive = true,
+                  widget.onLetterChagneStatus?.call(_alphabetScrollActive),
                   _onDragUpdate(dx: details.localPosition.dx)
                 }
             : (details) => {
                   _alphabetScrollActive = true,
+                  widget.onLetterChagneStatus?.call(_alphabetScrollActive),
                   _onDragUpdate(dy: details.localPosition.dy)
                 },
         onTapUp: (details) => {
               setState(() {
                 _alphabetScrollActive = false;
+                widget.onLetterChagneStatus?.call(_alphabetScrollActive);
                 _alphabetIndex = null;
               })
             },
@@ -113,6 +118,7 @@ class _AlphabetScrollbarState extends State<AlphabetScrollbar> {
             ? null
             : (details) => {
                   _alphabetScrollActive = true,
+                  widget.onLetterChagneStatus?.call(_alphabetScrollActive),
                   _onDragUpdate(dy: details.localPosition.dy)
                 },
         onVerticalDragEnd: widget.switchToHorizontal
@@ -121,6 +127,7 @@ class _AlphabetScrollbarState extends State<AlphabetScrollbar> {
                   setState(() {
                     _alphabetScrollActive = false;
                     _alphabetIndex = null;
+                    widget.onLetterChagneStatus?.call(_alphabetScrollActive);
                   })
                 },
         onVerticalDragUpdate: widget.switchToHorizontal
@@ -132,6 +139,7 @@ class _AlphabetScrollbarState extends State<AlphabetScrollbar> {
             ? null
             : (details) => {
                   _alphabetScrollActive = true,
+                  widget.onLetterChagneStatus?.call(_alphabetScrollActive),
                   _onDragUpdate(dx: details.localPosition.dx)
                 },
         onHorizontalDragEnd: !widget.switchToHorizontal
@@ -139,6 +147,7 @@ class _AlphabetScrollbarState extends State<AlphabetScrollbar> {
             : (details) => {
                   setState(() {
                     _alphabetScrollActive = false;
+                    widget.onLetterChagneStatus?.call(_alphabetScrollActive);
                     _alphabetIndex = null;
                   })
                 },
@@ -176,7 +185,8 @@ class _AlphabetScrollbarState extends State<AlphabetScrollbar> {
     for (var letter in alphabetValues) {
       var indexOfLetter = alphabetValues.indexOf(letter);
       num space = 0;
-      TextStyle? currentLetterStyle = widget.style ?? Theme.of(context).textTheme.bodyMedium;
+      TextStyle? currentLetterStyle =
+          widget.style ?? Theme.of(context).textTheme.bodyMedium;
       Decoration? currentLetterContainerDecoration =
           widget.letterContainerDecoration;
       EdgeInsets? currentLetterContainerPadding = widget.letterContainerPadding;
@@ -267,7 +277,7 @@ class _AlphabetScrollbarState extends State<AlphabetScrollbar> {
         : (dy! / oneItemSize).floor();
     if (index < 0) {
       return 0;
-    } else if (index > _alphabet.length -1) {
+    } else if (index > _alphabet.length - 1) {
       return _alphabet.length - 1;
     }
     return index;
