@@ -178,6 +178,13 @@ class _StateMainApp extends State<MainApp> {
                     leftSidedOrTop: _leftSidedOrTop,
                     factor: _factor,
                     selectedLetterAdditionalSpace: _additional,
+                    halfSinWaveLength: 26,
+                    selectedLetterSize: 20,
+                    selectedLetterContainerDecoration: BoxDecoration(
+                      color: Colors.pinkAccent,
+                      borderRadius: BorderRadius.circular(999)
+                    ),
+                    duration: Duration(milliseconds: 50),
                     padding: EdgeInsets.only(
                       right: !_switchToHorizontal &&!_leftSidedOrTop ? _padding : 0.0, 
                       left: !_switchToHorizontal && _leftSidedOrTop ? _padding : 0.0,
